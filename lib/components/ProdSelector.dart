@@ -1,15 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:milk/entities/ProdUnit.dart';
 
 import '../core.dart';
-
 import '../entities/Prod.dart';
 import '../entities/Unit.dart';
 import 'DropDownButton.dart';
 
 class ProdSelector extends StatefulWidget {
-
   final List<Prod> prods;
   final Function(ProdUnit) onAdd;
 
@@ -20,7 +17,6 @@ class ProdSelector extends StatefulWidget {
 }
 
 class _ProdSelectorState extends State<ProdSelector> {
-
   int? _prodID;
   int? _unitID;
   final ProdUnit _prod = ProdUnit.empty();
@@ -30,7 +26,9 @@ class _ProdSelectorState extends State<ProdSelector> {
 
   _onChangeProd(int? prodID) async {
     for (Prod prod in widget.prods) {
-      if (prod.id == prodID) { _prod.prod = prod.name; }
+      if (prod.id == prodID) {
+        _prod.prod = prod.name;
+      }
     }
     _units = await core.getProdUnits(prodID!);
     _prodID = prodID;
@@ -56,25 +54,27 @@ class _ProdSelectorState extends State<ProdSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-            flex: 6,
-            child: DropDownButton('Выберите продукт', widget.prods, _prodID, _onChangeProd)),
-        Expanded(
-            flex: 2,
-            child: DropDownButton('Ед изм', _units, _unitID, _onChangeUnit)),
-        Expanded(
-            flex: 1,
-            child: TextField(
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                controller: _textCtrl,
-                onChanged: (value) => _onChangeCount(value.isEmpty ? 0 : double.parse(value)))),
-        IconButton(
-            onPressed: _prod.id == null || _prod.count == 0 ? null : () => widget.onAdd(ProdUnit.fromProdUnit(_prod)),
-            icon: const Icon(Icons.add))
-      ]
-    );
+    return Row(children: [
+      Expanded(
+          flex: 6,
+          child: DropDownButton(
+              'Выберите продукт', widget.prods, _prodID, _onChangeProd)),
+      Expanded(
+          flex: 2,
+          child: DropDownButton('Ед изм', _units, _unitID, _onChangeUnit)),
+      Expanded(
+          flex: 1,
+          child: TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              controller: _textCtrl,
+              onChanged: (value) =>
+                  _onChangeCount(value.isEmpty ? 0 : double.parse(value)))),
+      IconButton(
+          onPressed: _prod.id == null || _prod.count == 0
+              ? null
+              : () => widget.onAdd(ProdUnit.fromProdUnit(_prod)),
+          icon: const Icon(Icons.add))
+    ]);
   }
 }

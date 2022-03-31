@@ -31,7 +31,7 @@ class Agent implements Model {
         id = json['id'],
         name = json['name'],
         phone = json['phone'],
-        adress = json['adress'];
+        adress = '${json['adress']}';
 
   @override
   String toJSON() => '{"name":"$name", "phone":$phone, "adress":"$adress"}';
